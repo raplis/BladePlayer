@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,11 +76,16 @@ public class Local extends Source
             int albumColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM);
             int trackNumberColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
             int albumIdColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ID);
-
+            int displayColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME);
+            int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
             do
             {
                 String title = musicCursor.getString(titleColumn);
-
+                String display = musicCursor.getString(displayColumn);
+                String duration = musicCursor.getString(durationColumn);
+                Log.i("Local", "Title : " + title + " | Display : " + display + " | Duration : " + duration);
+                if(display.endsWith("m4a") || display.endsWith("wav") || display.endsWith("ogg")) continue;
+                if(duration == null || duration.equals("0")) continue;
                 //MediaStore only allows one artist String
                 //We will split this string on ',' for songs with multiple artists
                 //NOTE : we could split on ' & ', but

@@ -3,6 +3,7 @@ package v.blade.sources.spotify;
 import android.annotation.SuppressLint;
 import android.os.Process;
 import android.support.v4.media.session.MediaControllerCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -495,6 +496,7 @@ public class SpotifyExploreAdapter extends RecyclerView.Adapter<SpotifyExploreAd
             Picasso.get()
                     .load(album.images[album.images.length - 2].url)
                     .into(holder.imageView);
+            Log.i("album.images", album.images[album.images.length - 2].url);
 
             //OnClick action : obtain handle and play song
             //TODO : maybe optimize and put clickListeners in onCreateViewHolder instead

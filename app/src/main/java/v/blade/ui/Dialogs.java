@@ -39,7 +39,7 @@ public class Dialogs
 
         //Create the "new playlist" option
         Playlist dummyNew = new Playlist(context.getString(R.string.new_playlist), null, null, null, null);
-        dummyNew.setImageRequest(Picasso.get().load(R.drawable.ic_playlist_add));
+        dummyNew.setImageRequest(Picasso.get().load(R.drawable.ic_playlist_add));   //where is this?
         playlists.add(dummyNew);
 
         for(Playlist playlist : Library.getPlaylists())
@@ -360,6 +360,7 @@ public class Dialogs
                 .setTitle(R.string.welcome_to_blade)
                 .setMessage(R.string.welcome_message)
                 .setPositiveButton(R.string.ok, ((dialog, which) -> dialog.dismiss()));
+//        setNegativeButton
         AlertDialog dialog = builder.create();
         dialog.show();
     }
