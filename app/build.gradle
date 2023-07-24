@@ -7,7 +7,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "v.blade"
+        applicationId "v.blade.catte"
         minSdk 21
         targetSdk 33
         versionCode 30

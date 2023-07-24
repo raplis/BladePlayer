@@ -5,5 +5,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "Blade Player"
+rootProject.name = "Catee"
 include ':app'
