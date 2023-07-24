@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Catee</string>
+    <string name="welcome">Welcome back, Anina</string>
 
     <string name="navigation_drawer_open">打开导航栏</string>
     <string name="navigation_drawer_close">关闭导航栏</string>
@@ -29,7 +30,7 @@
     <string name="item_more">更多…</string>
 
     <string name="source_down_desc">已离线 - 请检查配置文件</string>
-    <string name="source_need_init_desc">需初始化 - 强制或检查配置</string>
+    <string name="source_need_init_desc">不能吃白食吧你</string>
     <string name="source_connecting_desc">连接中…</string>
     <string name="source_ready_desc">Ready</string>
 
@@ -40,11 +41,9 @@
     <string name="force_init">强制初始化</string>
     <string name="remove">删除</string>
     <string name="version">版本</string>
-    <string name="about_desc">Blade Player 是一个安卓音乐播放器（由 @vhaudiquet 制作），本应用使用该播放器魔改得到</string>
+    <string name="about_desc">这个播放器是根据Blade Player（由 @vhaudiquet 制作）魔改得到的 感谢源码</string>
     <string name="about_license">许可证 : Apache 2.0</string>
-    <string name="about_logo">图标 : @zularizal</string>
     <string name="about_sources">源码 : github.com/vhaudiquet/BladePlayer</string>
-    <string name="about_libraries_used">使用的库 :</string>
     <string name="username">用户名</string>
     <string name="password">密码</string>
     <string name="spotify_login_desc">(当使用 API 或播放器时，你也许需要重新登录)</string>
@@ -84,9 +83,11 @@
     <string name="song_removed_from_list">%1$s 已从 %2$s 中移除</string>
     <string name="song_removed_from_list_error">%1$s 无法从 %2$s 中移除</string>
     <string name="spotify_player_panic">Spotify 播放出错，难道 互联网 / 设置 出了问题？</string>
-    <string name="grant_storage_permission">授予存储空间权限</string>
+    <string name="grant_storage_permission">别这么扣， 给点空间</string>
+    <string name="notification_policy_access">工具栏显示要不要</string>
+
     <string name="permission_already_granted">权限已授予</string>
-    <string name="permission_granted">拿到权限啦!</string>
+    <string name="permission_granted">憋点了，权限已经给了</string>
     <string name="collaborative">Collaborative</string>
     <string name="player_not_ready">%1$s 播放器还没准备好呢</string>
     <string name="welcome_to_blade">欢迎来到catee！</string>

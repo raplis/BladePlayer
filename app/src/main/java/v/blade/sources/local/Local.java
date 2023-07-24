@@ -1,15 +1,17 @@
 package v.blade.sources.local;
 
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Size;
 import android.view.LayoutInflater;
@@ -26,7 +28,6 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import v.blade.BladeApplication;
@@ -41,7 +42,7 @@ import v.blade.ui.ExploreFragment;
 public class Local extends Source
 {
     public static final int NAME_RESOURCE = R.string.local;
-    public static final int DESCRIPTION_RESOURCE = R.string.local_desc;
+//    public static final int DESCRIPTION_RESOURCE = R.string.local_desc;
     public static final int IMAGE_RESOURCE = R.drawable.ic_local;
 
     private static final int LOCAL_IMAGE_LEVEL = 1;
@@ -238,8 +239,6 @@ public class Local extends Source
 
         private final Local local;
 
-        private SettingsFragmentLocalBinding binding;
-
         private SettingsFragment(Local local)
         {
             super(R.layout.settings_fragment_local);
@@ -249,21 +248,37 @@ public class Local extends Source
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            binding = SettingsFragmentLocalBinding.inflate(inflater, container, false);
+            v.blade.databinding.SettingsFragmentLocalBinding binding = SettingsFragmentLocalBinding.inflate(inflater, container, false);
 
             binding.settingsLocalGrantPermission.setOnClickListener(view ->
             {
                 if(checkAndAskPermission())
                 {
                     Toast.makeText(requireContext(), getString(R.string.permission_already_granted), Toast.LENGTH_SHORT).show();
-                    local.status = SourceStatus.STATUS_READY;
                 }
                 else if(local.checkPermission())
                 {
                     Toast.makeText(requireContext(), getString(R.string.permission_granted), Toast.LENGTH_SHORT).show();
-                    local.status = SourceStatus.STATUS_READY;
                 }
+                local.status = SourceStatus.STATUS_READY;
             });
+
+            binding.notificationPolicyAccess.setOnClickListener(view ->
+            {
+                Intent intent = new Intent();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    intent.setAction(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().getPackageName());
+                } else
+                {
+                    intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                    intent.putExtra("app_package", requireActivity().getPackageName());
+                    intent.putExtra("app_uid", requireActivity().getApplicationInfo().uid);
+                }
+
+                startActivity(intent);
+            });
+
 
             return binding.getRoot();
         }

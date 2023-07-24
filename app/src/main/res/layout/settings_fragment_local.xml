@@ -21,5 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/grant_storage_permission" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/notification_policy_access"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_policy_access" />
     </LinearLayout>
 </ScrollView>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Blade Player</string>
+    <string name="welcome" translatable="false">Welcome back, Anina</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -87,6 +88,7 @@
     <string name="song_removed_from_list_error">%1$s could not be removed from playlist %2$s</string>
     <string name="spotify_player_panic">Spotify player error, something must be wrong (internet/settings ?)</string>
     <string name="grant_storage_permission">Grant permission to access storage</string>
+    <string name="notification_policy_access">Notification Policy access</string>
     <string name="permission_already_granted">Permission already granted</string>
     <string name="permission_granted">Permission granted !</string>
     <string name="collaborative">Collaborative</string>
