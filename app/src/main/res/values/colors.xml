@@ -4,7 +4,7 @@
     <color name="bladeGrey">#FF616161</color>
     <color name="bladeGreyDark">#FF212121</color>
     <color name="bladeGreyLight">#FFbdbdbd</color>
-    <color name="bladeGreyLighter">#FFe0e0e0</color>
+    <color name="bladeGreyLighter">#E3EEEF</color>
     <color name="white">#FFffffff</color>
     <color name="black">#FF000000</color>
     <color name="textGrey">#FF424242</color>

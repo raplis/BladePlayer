@@ -25,6 +25,7 @@
         android:background="@color/enabledFilter"
         app:layout_anchor="@+id/appBarLayout"
         app:layout_anchorGravity="center"
-        app:popupTheme="@style/Theme.BladePlayer" />
+        app:popupTheme="@style/Theme.BladePlayer"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -171,13 +171,11 @@ public class SettingsActivity extends AppCompatActivity implements
             {
                 private final TextView titleView;
                 private final ImageView imageView;
-                private final TextView subtitleView;
 
                 ViewHolder(View itemView)
                 {
                     titleView = itemView.findViewById(R.id.item_element_title);
                     imageView = itemView.findViewById(R.id.item_element_image);
-                    subtitleView = itemView.findViewById(R.id.item_element_subtitle);
                     ImageView moreView = itemView.findViewById(R.id.item_element_more);
 
                     moreView.setVisibility(View.GONE);
@@ -209,7 +207,7 @@ public class SettingsActivity extends AppCompatActivity implements
             @Override
             public int getCount()
             {
-                return 3;
+                return 1;
             }
 
             @Override
@@ -219,10 +217,10 @@ public class SettingsActivity extends AppCompatActivity implements
                 {
                     case 0:
                         return Local.class;
-                    case 1:
-                        return Spotify.class;
-                    case 2:
-                        return Deezer.class;
+//                    case 1:
+//                        return Spotify.class;
+//                    case 2:
+//                        return Deezer.class;
                 }
 
                 return null;
@@ -261,7 +259,7 @@ public class SettingsActivity extends AppCompatActivity implements
                     try
                     {
                         viewHolder.titleView.setText(current.getField("NAME_RESOURCE").getInt(null));
-                        viewHolder.subtitleView.setText(current.getField("DESCRIPTION_RESOURCE").getInt(null));
+//                        viewHolder.subtitleView.setText(current.getField("DESCRIPTION_RESOURCE").getInt(null));
                         viewHolder.imageView.setImageResource(current.getField("IMAGE_RESOURCE").getInt(null));
                     }
                     catch(IllegalAccessException | NoSuchFieldException e)
@@ -458,9 +456,13 @@ public class SettingsActivity extends AppCompatActivity implements
                             break;
                         }
                     }
-
+                    Log.i("Source221", "Already has one: " + alreadyHasOne);
                     if(alreadyHasOne) return;
                 }
+                else {
+                    return;
+                }
+                Log.i("Source222", "222");
 
                 try
                 {
@@ -483,7 +485,7 @@ public class SettingsActivity extends AppCompatActivity implements
             dialog.show();
         }
     }
-
+    //menu  关于
     public static class AboutFragment extends Fragment
     {
         private SettingsFragmentAboutBinding binding;

@@ -1,5 +1,7 @@
 package v.blade.player;
 
+import static v.blade.ui.MainActivity.purifyString;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -74,13 +76,14 @@ public class PlayerNotification
         if(service.index >= service.playlist.size()) return;
         Song song = service.playlist.get(service.index);
         if(song == null) return;
-
+        String name = song.getName();
+        Log.i("nameaa", name);
         //Update notification
         if(this.notification == null)
         {
             //Update mediaSession metadata
             service.mediaSession.setMetadata(new MediaMetadataCompat.Builder()
-                    .putString(MediaMetadata.METADATA_KEY_TITLE, song.getName())
+                    .putString(MediaMetadata.METADATA_KEY_TITLE, name)
                     .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getArtistsString())
                     .putString(MediaMetadata.METADATA_KEY_ALBUM, song.getAlbum().getName())
                     .putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, song.getName())
@@ -104,7 +107,7 @@ public class PlayerNotification
                 {
                     //Update mediaSession metadata
                     service.mediaSession.setMetadata(new MediaMetadataCompat.Builder()
-                            .putString(MediaMetadata.METADATA_KEY_TITLE, song.getName())
+                            .putString(MediaMetadata.METADATA_KEY_TITLE, name)
                             .putString(MediaMetadata.METADATA_KEY_ARTIST, song.getArtistsString())
                             .putString(MediaMetadata.METADATA_KEY_ALBUM, song.getAlbum().getName())
                             .putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, song.getName())
@@ -172,6 +175,10 @@ public class PlayerNotification
 
     private Notification getNotification(Song playing, Bitmap largeIcon)
     {
+        if(playing.getName().endsWith(".flac")) {
+            largeIcon = BitmapFactory.decodeResource(service.getResources(), R.drawable.flac);
+
+        }
         return buildNotification(playing, largeIcon).build();
     }
 
@@ -206,13 +213,13 @@ public class PlayerNotification
                 .setShowActionsInCompactView(0, 1, 2)
                 .setShowCancelButton(!isPlaying)
                 .setCancelButtonIntent(deleteIntent);
-
+        String name = purifyString(playing.getName())[0];
         builder.setStyle(style)
                 .setWhen(0)
                 .setColor(ContextCompat.getColor(service, R.color.bladeGrey)) //TODO change to theme colorPrimary ?
                 .setSmallIcon(R.drawable.ic_blade_notification)
                 .setContentIntent(contentIntent)
-                .setContentTitle(playing.getName())
+                .setContentTitle(name)
                 .setContentText(playing.getArtistsString() + " - " + playing.getAlbum().getName())
                 .setDeleteIntent(deleteIntent)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -237,9 +244,13 @@ public class PlayerNotification
                 {
                     ContextCompat.getMainExecutor(service).execute(() ->
                     {
+
+                        String[] res = purifyString(playing.getName());
+                        String name = res[0];
+                        String display = res[1];
                         //Update mediaSession metadata
                         service.mediaSession.setMetadata(new MediaMetadataCompat.Builder()
-                                .putString(MediaMetadata.METADATA_KEY_TITLE, playing.getName())
+                                .putString(MediaMetadata.METADATA_KEY_TITLE, name)
                                 .putString(MediaMetadata.METADATA_KEY_ARTIST, playing.getArtistsString())
                                 .putString(MediaMetadata.METADATA_KEY_ALBUM, playing.getAlbum().getName())
                                 .putString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE, playing.getName())
@@ -248,13 +259,13 @@ public class PlayerNotification
                                 .putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
                                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
                                 .build());
-                        if(bitmap == null) {
-                            Log.i("haah2", "Bitmap is null");
+                        if(bitmap == null || display.endsWith("flac")) {
+                            Bitmap bitmap2 = BitmapFactory.decodeResource(service.getResources(), R.drawable.flac);
+                            updateForImage(bitmap2);
                         }
                         else {
-                            Log.i("haah2", "Bitmap is not null" + bitmap.toString());
+                            updateForImage(bitmap);
                         }
-                        updateForImage(bitmap);
                     });
                 }
 
