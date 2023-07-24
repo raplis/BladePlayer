@@ -1,5 +1,7 @@
 package v.blade.library;
 
+import android.util.Log;
+
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -55,12 +57,14 @@ public class Album extends LibraryObject
 
     public void setImage(String imageMiniature, String imageBig, int imageLevel)
     {
+        Log.i("Album", "setImage: " + imageMiniature + " " + imageBig + " " + imageLevel);
         if(this.imageLevel > imageLevel) return;
 
         this.imageStr = imageMiniature;
         this.imageBigStr = imageBig;
         this.imageLevel = imageLevel;
         this.imageBig = (imageBig == null || imageBig.equals("")) ? null : Picasso.get().load(imageBig);
+        Log.i("Album", "setImage: " + this.imageBig + "song " + this.name);
         this.imageRequest = (imageMiniature == null || imageMiniature.equals("")) ? null : Picasso.get().load(imageMiniature);
     }
 }

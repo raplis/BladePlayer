@@ -14,6 +14,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +48,19 @@ public class MainActivity extends AppCompatActivity
 
     private NavHostFragment navHostFragment;
 
+    public static String[] purifyString (String s)
+    {
+        String display = s;
+        int dotIndex = display.lastIndexOf(".");
+        String title = dotIndex == -1 ? display : display.substring(0, dotIndex);
+        dotIndex = title.lastIndexOf("[");
+        title = dotIndex == -1 ? title : title.substring(0, dotIndex);
+        dotIndex = title.lastIndexOf("-");
+        title = dotIndex == -1 ? title : title.substring(dotIndex + 1);
+        title = title.trim();
+        String [] res= {title, display};
+        return res;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -152,16 +166,28 @@ public class MainActivity extends AppCompatActivity
                                 super.onMetadataChanged(metadata);
 
                                 if(metadata == null) return;
+                                String [] res = purifyString(metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
+                                String title = res[0];
+                                String display = res[1];
+                                binding.appBarMain.contentMain.currentplayElementTitle.setText(title);
 
-                                binding.appBarMain.contentMain.currentplayElementTitle.setText(metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
                                 String subtitle = metadata.getString(MediaMetadataCompat.METADATA_KEY_ARTIST) + " - " + metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM);
+
                                 binding.appBarMain.contentMain.currentplayElementSubtitle.setText(subtitle);
 
                                 Bitmap art = metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ART);
+
                                 if(art == null)
-                                    binding.appBarMain.contentMain.currentplayElementImage.setImageResource(R.drawable.ic_album);
-                                else
-                                    binding.appBarMain.contentMain.currentplayElementImage.setImageBitmap(art);
+                                binding.appBarMain.contentMain.currentplayElementImage.setImageResource(R.drawable.ic_album);
+                                else{
+                                    if(display.endsWith("flac")) {
+                                        binding.appBarMain.contentMain.currentplayElementImage.setImageResource(R.drawable.flacappbar);
+                                    }
+                                    else{
+                                        binding.appBarMain.contentMain.currentplayElementImage.setImageBitmap(art);
+                                    }
+                                }
+
                             }
                         };
 

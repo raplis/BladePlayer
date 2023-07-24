@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -308,6 +309,7 @@ public class SettingsActivity extends AppCompatActivity implements
                     imageView = itemView.findViewById(R.id.item_element_image);
                     subtitleView = itemView.findViewById(R.id.item_element_subtitle);
                     moreView = itemView.findViewById(R.id.item_element_more);
+                    Log.i("ViewHolderaa", "Created");
                 }
             }
 

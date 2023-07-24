@@ -3,6 +3,7 @@ package v.blade.ui;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,7 +163,7 @@ public class Dialogs
 
                         viewHolder.title = convertView.findViewById(R.id.item_element_title);
                         viewHolder.image = convertView.findViewById(R.id.item_element_image);
-
+                        Log.i("Dialogs+", "getView: " + viewHolder.title + " " + viewHolder.image);
                         convertView.setTag(viewHolder);
                     }
                     else viewHolder = (ViewHolder) convertView.getTag();
@@ -279,6 +280,7 @@ public class Dialogs
                             .inflate(R.layout.item_switch, parent, false);
                     viewHolder = new ViewHolder();
                     viewHolder.imageView = convertView.findViewById(R.id.item_element_image);
+                    Log.i("Dialogs++", "getView: " + viewHolder.imageView);
                     viewHolder.switchView = convertView.findViewById(R.id.item_element_switch);
                     convertView.setTag(viewHolder);
                 }

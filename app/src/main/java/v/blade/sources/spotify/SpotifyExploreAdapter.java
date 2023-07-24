@@ -497,7 +497,7 @@ public class SpotifyExploreAdapter extends RecyclerView.Adapter<SpotifyExploreAd
                     .load(album.images[album.images.length - 2].url)
                     .into(holder.imageView);
             Log.i("album.images", album.images[album.images.length - 2].url);
-
+//            音轨
             //OnClick action : obtain handle and play song
             //TODO : maybe optimize and put clickListeners in onCreateViewHolder instead
             holder.itemView.setOnClickListener(v ->
@@ -545,7 +545,9 @@ public class SpotifyExploreAdapter extends RecyclerView.Adapter<SpotifyExploreAd
 
             Picasso.get().load(currentAlbum.images[currentAlbum.images.length - 2].url)
                     .into(holder.imageView);
-
+            Log.i("album.images", currentAlbum.images[currentAlbum.images.length - 2].url + " " + currentAlbum.name);
+            Log.i("album.images", currentAlbum.images[currentAlbum.images.length - 1].url+ "len" + currentAlbum.images.length);
+//            专辑?
             //OnClick action : browse album
             holder.itemView.setOnClickListener(v ->
                     BladeApplication.obtainExecutorService().execute(() ->
@@ -632,7 +634,7 @@ public class SpotifyExploreAdapter extends RecyclerView.Adapter<SpotifyExploreAd
 
             String subtitle = currentPlaylist.tracks.total + " " + exploreFragment.getString(R.string.songs).toLowerCase();
             holder.subtitleView.setText(subtitle);
-
+            Log.i("playlist.images", "go to here");
             if(currentPlaylist.images.length > 0)
                 Picasso.get().load(currentPlaylist.images[0].url).into(holder.imageView);
             else

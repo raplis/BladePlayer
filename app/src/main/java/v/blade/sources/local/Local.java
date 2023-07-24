@@ -2,12 +2,16 @@ package v.blade.sources.local;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +25,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import v.blade.BladeApplication;
 import v.blade.R;
@@ -77,13 +84,18 @@ public class Local extends Source
             int trackNumberColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.TRACK);
             int albumIdColumn = musicCursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM_ID);
             int displayColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME);
+            int dataColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
+
+
+
             do
             {
                 String title = musicCursor.getString(titleColumn);
                 String display = musicCursor.getString(displayColumn);
                 String duration = musicCursor.getString(durationColumn);
-                Log.i("Local", "Title : " + title + " | Display : " + display + " | Duration : " + duration);
+                String data = musicCursor.getString(dataColumn);
+                Log.i("Local", "Title : " + title + " | Display : " + display + " | Duration : " + duration + " | Data : " + data);
                 if(display.endsWith("m4a") || display.endsWith("wav") || display.endsWith("ogg")) continue;
                 if(duration == null || duration.equals("0")) continue;
                 //MediaStore only allows one artist String
@@ -103,7 +115,24 @@ public class Local extends Source
                 long albumId = musicCursor.getLong(albumIdColumn);
                 String pathUri = "content://media/external/audio/albumart/" + albumId;
 
-                Library.addSong(title, album, artists, this, id, artists, pathUri, track_number, new String[artists.length], new String[artists.length], pathUri, LOCAL_IMAGE_LEVEL);
+                Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, albumId);
+
+                try{
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                    {
+                        contentResolver.loadThumbnail(contentUri, new Size(64, 64), null);
+                    }
+                }
+                catch(IOException e)
+                {
+                    pathUri = null;
+                }
+//                if(display.endsWith("flac")) {
+//                    pathUri = data;
+////                    LOCAL_IMAGE_LEVEL = 3;
+//                }
+                Log.i("Local","Title : " + title + " | Album : " + album + " | Artist : " + artist + " | Track : " + track_number + " | ID : " + id + " | Album ID : " + albumId + " | Path : " + pathUri);
+                Library.addSong(data, album, artists, this, id, artists, pathUri, track_number, new String[artists.length], new String[artists.length], pathUri, LOCAL_IMAGE_LEVEL);
             }
             while(musicCursor.moveToNext());
 

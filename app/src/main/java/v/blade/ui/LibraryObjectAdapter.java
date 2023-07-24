@@ -2,6 +2,10 @@ package v.blade.ui;
 
 import android.annotation.SuppressLint;
 import android.database.DataSetObserver;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +19,24 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import org.kc7bfi.jflac.FLACDecoder;
+import org.kc7bfi.jflac.io.RandomFileInputStream;
+import org.kc7bfi.jflac.metadata.Application;
+import org.kc7bfi.jflac.metadata.CueSheet;
+import org.kc7bfi.jflac.metadata.Metadata;
+import org.kc7bfi.jflac.metadata.Padding;
+import org.kc7bfi.jflac.metadata.Picture;
+import org.kc7bfi.jflac.metadata.SeekTable;
+import org.kc7bfi.jflac.metadata.Unknown;
+import org.kc7bfi.jflac.metadata.VorbisComment;
+
+import java.io.File;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import v.blade.R;
@@ -49,7 +68,7 @@ public class LibraryObjectAdapter extends RecyclerView.Adapter<LibraryObjectAdap
             subtitleView = itemView.findViewById(R.id.item_element_subtitle);
             imageView = itemView.findViewById(R.id.item_element_image);
             moreView = itemView.findViewById(R.id.item_element_more);
-
+            Log.d("LibraryObjectAdapter123", "imageView: " + imageView);
             subimageView = itemView.findViewById(R.id.item_element_subimage);
 
             if(moreView != null && touchHelper != null)
@@ -180,18 +199,88 @@ public class LibraryObjectAdapter extends RecyclerView.Adapter<LibraryObjectAdap
         return viewHolder;
     }
 
-    @Override
+//    public void getAlbumArtFromMusicFile (String path, ImageView imageView)
+//    {
+//        try
+//        {
+//            RandomFileInputStream inputStream = new RandomFileInputStream(path);
+//            // 创建 FLACDecoder 来解码 FLAC 文件
+//            FLACDecoder decoder = new FLACDecoder(inputStream);
+//            // 获取 FLAC 文件的所有元数据块
+//            List<Metadata> metadataList = new ArrayList<>(Arrays.asList(decoder.readMetadata()));
+//            byte[] albumArtBytes = null;
+//            for(Metadata metadata : metadataList)
+//            {
+//                if(metadata instanceof SeekTable)
+//                {
+//                    System.out.println("METADATA_TYPE_PICTURE SeekTable");
+//                    // 获取 METADATA_BLOCK_PICTURE 块的图像数据
+////                    albumArtBytes = ((MetadataBlockPicture) metadata).getPictureData();
+////                    break;
+//                }
+//                else if(metadata instanceof VorbisComment){
+//                    System.out.println("METADATA_TYPE_PICTURE VorbisComment" + path);
+//                }
+//                else if(metadata instanceof Padding) {
+//                    System.out.println("METADATA_TYPE_PICTURE Padding");
+//                }
+//                else if(metadata instanceof Application) {
+//                        System.out.println("METADATA_TYPE_PICTURE Application");
+//                    }
+//                else {
+//                    System.out.println("METADATA_TYPE_PICTURE else");
+//                    }
+//            }
+//
+//            // 关闭输入流
+//            inputSteam.close();
+//
+//            // 将字节数组的图像数据解码为 Bitmap 对象
+////            Bitmap bitmap = BitmapFactory.decodeByteArray(albumArtBytes, 0, albumArtBytes.length);
+////
+////            imageView.setImageBitmap(bitmap);
+//        }
+//        catch(Exception e)
+//            {
+//                throw new RuntimeException(e);
+//            }
+//}
+
+
+
+        @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i)
     {
         LibraryObject current = getItem(i);
+        String data = current.getName();
 
-        viewHolder.titleView.setText(current.getName());
 
+        File file = new File(data);
+        String fileNameWithExtension = file.getName();
+        int dotIndex = fileNameWithExtension.lastIndexOf(".");
+        String fileNameWithoutExtension = dotIndex == -1 ? fileNameWithExtension : fileNameWithExtension.substring(0, dotIndex);
+        dotIndex = fileNameWithoutExtension.lastIndexOf("[");
+        fileNameWithoutExtension = dotIndex == -1 ? fileNameWithoutExtension : fileNameWithoutExtension.substring(0, dotIndex);
+        dotIndex = fileNameWithoutExtension.lastIndexOf("-");
+        fileNameWithoutExtension = dotIndex == -1 ? fileNameWithoutExtension : fileNameWithoutExtension.substring(dotIndex + 1);
+        fileNameWithoutExtension = fileNameWithoutExtension.trim();
+        viewHolder.titleView.setText(fileNameWithoutExtension);
         RequestCreator image = current.getImageRequest();
+        Log.i("LibraryObjectAdapter", "fileNameWithoutExtension: " + fileNameWithoutExtension);
         if(viewHolder.imageView != null)
         {
             if(image != null)
-                image.into(viewHolder.imageView);
+            {
+                if(fileNameWithExtension.endsWith("flac"))
+                {
+
+                    viewHolder.imageView.setImageResource(R.drawable.flac);
+                }
+                else
+                {
+                    image.into(viewHolder.imageView);
+                }
+            }
             else if(current instanceof Artist)
                 viewHolder.imageView.setImageResource(R.drawable.ic_artist);
             else if(current instanceof Album || current instanceof Song)

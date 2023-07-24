@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.media.session.MediaControllerCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,6 +147,7 @@ public class LibraryFragment extends Fragment
     private void onViewClicked(View view)
     {
         int position = binding.mainListview.getChildLayoutPosition(view);
+        Log.i("LibraryFragment", "onViewClicked : " + position);
         LibraryObject clicked = current.get(position);
         onElementClicked(clicked, position);
     }
@@ -165,6 +167,7 @@ public class LibraryFragment extends Fragment
                 //On search, we only play current song
                 ArrayList<Song> list = new ArrayList<>();
                 list.add((Song) element);
+
                 MediaBrowserService.getInstance().setPlaylist(list);
                 MediaBrowserService.getInstance().setIndex(0);
                 MediaControllerCompat.getMediaController(requireActivity()).getTransportControls().play();

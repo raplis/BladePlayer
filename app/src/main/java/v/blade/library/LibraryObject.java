@@ -9,6 +9,7 @@ import v.blade.sources.SourceInformation;
 public abstract class LibraryObject
 {
     protected String name;
+    protected String display;
     protected ArrayList<SourceInformation> sources;
     protected RequestCreator imageRequest = null;
     protected String imageStr = null;
@@ -31,5 +32,9 @@ public abstract class LibraryObject
     public String getImageStr()
     {
         return imageStr;
+    }
+    public String getDisplay()
+    {
+        return display;
     }
 }

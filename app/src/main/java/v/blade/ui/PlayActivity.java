@@ -1,5 +1,7 @@
 package v.blade.ui;
 
+import static v.blade.ui.MainActivity.purifyString;
+
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -221,10 +224,15 @@ public class PlayActivity extends AppCompatActivity
 
                                 if(metadata == null) return;
 
-                                binding.playTitle.setText(metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
+
+
+                                String[] res = purifyString(metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
+                                String title = res[0];
+                                String display = res[1];
+
+                                binding.playTitle.setText(title);
                                 String subtitle = metadata.getString(MediaMetadataCompat.METADATA_KEY_ARTIST) + " \u00B7 " + metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM);
                                 binding.playSubtitle.setText(subtitle);
-
                                 //Set duration
                                 long durationMillis = metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION);
                                 long durationMins = (durationMillis / 60000) % 60000;
@@ -235,7 +243,14 @@ public class PlayActivity extends AppCompatActivity
 
                                 //Set art
                                 Bitmap art = metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ART);
-                                if(art != null) binding.playAlbum.setImageBitmap(art);
+                                if(art != null) {
+                                    if(display.endsWith("flac")) {
+                                        binding.playAlbum.setImageResource(R.drawable.big_album);
+                                    }
+                                    else {
+                                        binding.playAlbum.setImageBitmap(art);
+                                    }
+                                }
                                 else binding.playAlbum.setImageResource(R.drawable.ic_album);
 
                                 updatePlaylist();

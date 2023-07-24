@@ -13,6 +13,7 @@ import android.media.MediaMetadata;
 import android.os.Build;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
@@ -112,7 +113,12 @@ public class PlayerNotification
                             .putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
                             .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
                             .build());
-
+                    if(bitmap == null) {
+                        Log.i("haah", "Bitmap is null");
+                    }
+                    else {
+                        Log.i("haah", "Bitmap is not null" + bitmap.toString());
+                    }
                     Notification notification = getNotification(song, bitmap);
                     PlayerNotification.this.notification = notification;
                     notificationManager.notify(PlayerNotification.NOTIFICATION_ID, notification);
@@ -242,7 +248,12 @@ public class PlayerNotification
                                 .putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
                                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
                                 .build());
-
+                        if(bitmap == null) {
+                            Log.i("haah2", "Bitmap is null");
+                        }
+                        else {
+                            Log.i("haah2", "Bitmap is not null" + bitmap.toString());
+                        }
                         updateForImage(bitmap);
                     });
                 }
