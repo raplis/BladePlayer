@@ -7,6 +7,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -88,8 +90,6 @@ public class Local extends Source
             int dataColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
             int durationColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
 
-
-
             do
             {
                 String title = musicCursor.getString(titleColumn);
@@ -107,7 +107,6 @@ public class Local extends Source
                 String artist = musicCursor.getString(artistColumn);
                 String[] artists = artist.split(", ");
                 //if(artists.length == 1) artists = artist.split(" & ");
-
                 String album = musicCursor.getString(albumColumn);
                 long id = musicCursor.getLong(idColumn);
                 int track_number = musicCursor.getInt(trackNumberColumn);
@@ -115,9 +114,7 @@ public class Local extends Source
                 //Load album art if it exists
                 long albumId = musicCursor.getLong(albumIdColumn);
                 String pathUri = "content://media/external/audio/albumart/" + albumId;
-
                 Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, albumId);
-
                 try{
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                     {
@@ -128,10 +125,10 @@ public class Local extends Source
                 {
                     pathUri = null;
                 }
-//                if(display.endsWith("flac")) {
-//                    pathUri = data;
-////                    LOCAL_IMAGE_LEVEL = 3;
-//                }
+                if(display.endsWith("flac")) {
+                    pathUri = null;
+//                    LOCAL_IMAGE_LEVEL = 3;
+                }
                 Log.i("Local","Title : " + title + " | Album : " + album + " | Artist : " + artist + " | Track : " + track_number + " | ID : " + id + " | Album ID : " + albumId + " | Path : " + pathUri);
                 Library.addSong(data, album, artists, this, id, artists, pathUri, track_number, new String[artists.length], new String[artists.length], pathUri, LOCAL_IMAGE_LEVEL);
             }
@@ -139,7 +136,6 @@ public class Local extends Source
 
             musicCursor.close();
         }
-
         //Obtain playlists
 
     }
@@ -275,7 +271,6 @@ public class Local extends Source
                     intent.putExtra("app_package", requireActivity().getPackageName());
                     intent.putExtra("app_uid", requireActivity().getApplicationInfo().uid);
                 }
-
                 startActivity(intent);
             });
 

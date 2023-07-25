@@ -105,6 +105,7 @@ public class PlayerNotification
             {
                 void updateEverything(Bitmap bitmap)
                 {
+                    Bitmap bit2 = BitmapFactory.decodeResource(service.getResources(), R.drawable.flac);
                     //Update mediaSession metadata
                     service.mediaSession.setMetadata(new MediaMetadataCompat.Builder()
                             .putString(MediaMetadata.METADATA_KEY_TITLE, name)
@@ -114,7 +115,7 @@ public class PlayerNotification
                             .putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, song.getTrackNumber())
                             .putLong(MediaMetadata.METADATA_KEY_DURATION, service.current == null ? 0 : service.current.getDuration())
                             .putBitmap(MediaMetadata.METADATA_KEY_ART, bitmap)
-                            .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
+                            .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bit2)
                             .build());
                     if(bitmap == null) {
                         Log.i("haah", "Bitmap is null");
@@ -248,6 +249,8 @@ public class PlayerNotification
                         String[] res = purifyString(playing.getName());
                         String name = res[0];
                         String display = res[1];
+                        Bitmap bitmap2 = BitmapFactory.decodeResource(service.getResources(), R.drawable.flac);
+
                         //Update mediaSession metadata
                         service.mediaSession.setMetadata(new MediaMetadataCompat.Builder()
                                 .putString(MediaMetadata.METADATA_KEY_TITLE, name)
@@ -260,7 +263,6 @@ public class PlayerNotification
                                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap)
                                 .build());
                         if(bitmap == null || display.endsWith("flac")) {
-                            Bitmap bitmap2 = BitmapFactory.decodeResource(service.getResources(), R.drawable.flac);
                             updateForImage(bitmap2);
                         }
                         else {
@@ -280,7 +282,7 @@ public class PlayerNotification
                 }
             });
         else
-            builder.setLargeIcon(BitmapFactory.decodeResource(service.getResources(), R.drawable.ic_album));
+            builder.setLargeIcon(BitmapFactory.decodeResource(service.getResources(), R.drawable.flac));
 
         return builder;
     }
