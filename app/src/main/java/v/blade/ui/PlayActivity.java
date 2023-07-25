@@ -17,6 +17,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -33,6 +34,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicReference;
 
 import v.blade.R;
 import v.blade.databinding.ActivityPlayBinding;
@@ -117,6 +119,30 @@ public class PlayActivity extends AppCompatActivity
         //Set skip buttons actions
         binding.playSkipprev.setOnClickListener(view -> getMediaController().getTransportControls().skipToPrevious());
         binding.playSkipnext.setOnClickListener(view -> getMediaController().getTransportControls().skipToNext());
+
+        AtomicReference<Float> x = new AtomicReference<>((float) 0);
+        binding.playAlbum.setOnTouchListener((view, motionEvent) -> {
+
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    x.set(motionEvent.getX());
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if(motionEvent.getX() - x.get() > 100)
+                    {
+                        getMediaController().getTransportControls().skipToNext();
+                    }
+                    else if(motionEvent.getX() - x.get() < -100)
+                    {
+                        getMediaController().getTransportControls().skipToPrevious();
+                    }
+                    break;
+            }
+
+            return true;
+        });
 
         //Set shuffle and repeat actions
         binding.playShuffle.setOnClickListener(view ->
