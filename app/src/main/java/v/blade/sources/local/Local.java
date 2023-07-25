@@ -7,7 +7,6 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
@@ -178,7 +176,27 @@ public class Local extends Source
     @Override
     public void addSongToPlaylist(Song song, Playlist playlist, Runnable callback, Runnable failureCallback)
     {
-        failureCallback.run();
+        if(playlist.getSongs() == null) {
+            System.out.println("Playlist songs null");
+        }
+        else if(playlist.getSongs().contains(song)) {
+            System.out.println("Playlist already contains song");
+        }
+        for(Playlist playListOld : Library.getPlaylists()) {
+            if(playListOld.getName().equals(playlist.getName())) {
+                failureCallback.run();
+                return ;
+            }
+        }
+        playlist.getSongs().add(song);
+        Log.i("Local", "Added song to playlist " + playlist.getName() + "successfule");
+        Library.getPlaylists().add(playlist);
+
+        System.out.println(playlist.getSongs().size() + " songs in playlist");
+        //Save library
+        Library.save();
+        saveSources();
+        callback.run();
     }
 
     @Override
@@ -190,7 +208,10 @@ public class Local extends Source
     @Override
     public void removePlaylist(Playlist playlist, Runnable callback, Runnable failureCallback)
     {
-        failureCallback.run();
+        Library.getPlaylists().remove(playlist);
+        Library.save();
+        Log.i("Local", "Removed playlist " + playlist.getName() + "successfule");
+        callback.run();
     }
 
     @Override
@@ -208,7 +229,9 @@ public class Local extends Source
     @Override
     public void removeFromPlaylist(Song song, Playlist playlist, Runnable callback, Runnable failureCallback)
     {
-        failureCallback.run();
+        playlist.getSongs().remove(song);
+        Library.save();
+        callback.run();
     }
 
     private boolean checkPermission()

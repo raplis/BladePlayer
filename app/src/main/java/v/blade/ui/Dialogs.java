@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SwitchCompat;
 
+import com.google.gson.internal.bind.util.ISO8601Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -30,12 +31,14 @@ import v.blade.library.Playlist;
 import v.blade.library.Song;
 import v.blade.sources.Source;
 import v.blade.sources.SourceInformation;
+import v.blade.sources.local.Local;
 
 public class Dialogs
 {
     public static void openAddToPlaylistDialog(Activity context, Song toAdd)
     {
         //Build the lists of playlists suitable to receive toAdd
+
         ArrayList<Playlist> playlists = new ArrayList<>();
 
         //Create the "new playlist" option
@@ -54,6 +57,8 @@ public class Dialogs
                 }
             }
         }
+        System.out.println("playlists size: " + playlists.size() + "Library.getPlaylists()" + Library.getPlaylists());
+
 
         //Build adapter and dialog with clickListener
         LibraryObjectAdapter adapter = new LibraryObjectAdapter(playlists, null);
@@ -65,23 +70,31 @@ public class Dialogs
         adapter.setClickListener(view ->
         {
             int position = dialog.getListView().getPositionForView(view);
-
             if(position == 0)
             {
-                openCreatePlaylistDialog(context, toAdd);
+                System.out.println("position == 0");
+                openCreatePlaylistDialog(context, toAdd, playlists);
                 dialog.dismiss();
                 return;
             }
 
             Playlist current = (Playlist) adapter.getItem(position);
-            Source source = current.getSource().source;
-
-            source.addSongToPlaylist(toAdd, current, () -> context.runOnUiThread(() ->
-                            Toast.makeText(context, context.getString(R.string.song_added_to_list, toAdd.getName(), current.getName()),
-                                    Toast.LENGTH_SHORT).show()),
-                    () -> context.runOnUiThread(() ->
-                            Toast.makeText(context, context.getString(R.string.song_added_to_list_error, toAdd.getName(), current.getName()),
-                                    Toast.LENGTH_SHORT).show()));
+            for(Playlist playlist : Library.getPlaylists())
+            {
+                if(playlist.getName().equals(current.getName()))
+                {
+                    if(playlist.getSongs().contains(toAdd))
+                    {
+                        Toast.makeText(context, R.string.already_in_list, Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        playlist.getSongs().add(toAdd);
+                        Toast.makeText(context, R.string.add_success, Toast.LENGTH_SHORT).show();
+                    }
+                    dialog.dismiss();
+                    return;
+                }
+            }
 
             dialog.dismiss();
         });
@@ -89,7 +102,7 @@ public class Dialogs
         dialog.show();
     }
 
-    protected static void openCreatePlaylistDialog(Activity context, Song first)
+    protected static void openCreatePlaylistDialog(Activity context, Song first, ArrayList<Playlist> playlists)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
                 .setTitle(R.string.new_playlist)
@@ -111,6 +124,7 @@ public class Dialogs
                 @Override
                 public View getDropDownView(int position, View convertView, ViewGroup parent)
                 {
+                    Log.i("Dialogs+", "getDropDownView: " + position + " " + convertView + " " + parent);
                     return getView(position, convertView, parent);
                 }
 
@@ -163,7 +177,7 @@ public class Dialogs
 
                         viewHolder.title = convertView.findViewById(R.id.item_element_title);
                         viewHolder.image = convertView.findViewById(R.id.item_element_image);
-                        Log.i("Dialogs+", "getView: " + viewHolder.title + " " + viewHolder.image);
+//                        Log.i("Dialogs+", "getView: " + viewHolder.title + " " + viewHolder.image);
                         convertView.setTag(viewHolder);
                     }
                     else viewHolder = (ViewHolder) convertView.getTag();
@@ -200,23 +214,19 @@ public class Dialogs
             assert spinner != null;
             Source current = (Source) spinner.getSelectedItem();
             EditText name = dialog.findViewById(R.id.playlist_name);
+//            System.out.println(current.getName() + current.getIndex());
             assert name != null;
+            Playlist playlist = playlists.get(0);
+            playlist.setSource(first.getSources().get(0));
+            playlist.setName(name.getText().toString());
 
-            current.createPlaylist(name.getText().toString(), new BladeApplication.Callback<Playlist>()
-            {
-                @Override
-                public void run(Playlist playlist)
-                {
-                    current.addSongToPlaylist(first, playlist, () -> context.runOnUiThread(() ->
-                                    Toast.makeText(context, context.getString(R.string.song_added_to_list, first.getName(), playlist.getName()),
-                                            Toast.LENGTH_SHORT).show()),
-                            () -> context.runOnUiThread(() ->
-                                    Toast.makeText(context, context.getString(R.string.song_added_to_list_error, first.getName(), playlist.getName()),
-                                            Toast.LENGTH_SHORT).show()));
-                }
-            }, () -> context.runOnUiThread(() ->
-                    Toast.makeText(context, context.getString(R.string.could_not_create_playlist, name.getText().toString()), Toast.LENGTH_SHORT).show()));
-
+            Log.i("Dialogs+", "name: " + name.getText().toString());
+            current.addSongToPlaylist(first, playlist, () -> context.runOnUiThread(() ->
+                            Toast.makeText(context, context.getString(R.string.song_added_to_list, playlist.getName()),
+                                    Toast.LENGTH_SHORT).show()),
+                    () -> context.runOnUiThread(() ->
+                            Toast.makeText(context, context.getString(R.string.song_added_to_list_error, playlist.getName()),
+                                    Toast.LENGTH_SHORT).show()));
             dialog.dismiss();
         });
         dialog.show();

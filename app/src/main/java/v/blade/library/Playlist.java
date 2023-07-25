@@ -9,7 +9,7 @@ import v.blade.sources.SourceInformation;
 public class Playlist extends LibraryObject
 {
     final List<Song> songs;
-    private final SourceInformation sourceInformation;
+    private SourceInformation sourceInformation;
     private final String playlistSubtitle;
 
     public Playlist(String name, List<Song> songList, String image, String subtitle, SourceInformation sourceInformation)
@@ -17,7 +17,12 @@ public class Playlist extends LibraryObject
         this.name = name;
         this.imageStr = image;
         this.imageRequest = (image == null || image.equals("")) ? null : Picasso.get().load(image);
-        this.songs = songList;
+        if(songList == null) {
+            this.songs = new java.util.ArrayList<>();
+        }
+        else {
+            this.songs = songList;
+        }
         this.sourceInformation = sourceInformation;
         this.playlistSubtitle = subtitle;
     }
@@ -26,7 +31,10 @@ public class Playlist extends LibraryObject
     {
         return sourceInformation;
     }
-
+    public void setSource(SourceInformation sourceInformation)
+    {
+        this.sourceInformation = sourceInformation;
+    }
     public List<Song> getSongs()
     {
         return songs;

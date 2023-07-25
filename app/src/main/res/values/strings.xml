@@ -67,9 +67,13 @@
     <string name="add_to_playlist">Add to playlist…</string>
     <string name="manage_libraries">Manage libraries</string>
     <string name="remove_from_list">Remove from playlist</string>
-    <string name="song_added_to_list">Added %1$s to list %2$s</string>
-    <string name="song_added_to_list_error">Could not add %1$s to list %2$s</string>
+    <string name="song_added_to_list">Added to list %1$s</string>
+    <string name="song_added_to_list_error">Could not add to list %1$s</string>
     <string name="new_playlist">New playlist</string>
+    <string name="already_in_list">Already in playlist</string>
+    <string name="add_success">Add successful</string>
+
+
     <string name="name">Name</string>
     <string name="ok" translatable="false">OK</string>
     <string name="could_not_create_playlist">Could not create playlist %1$s</string>

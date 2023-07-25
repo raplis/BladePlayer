@@ -37,4 +37,9 @@ public abstract class LibraryObject
     {
         return display;
     }
+
+    public void setName(String toString)
+    {
+        this.name = toString;
+    }
 }

@@ -1,5 +1,7 @@
 package v.blade.library;
 
+import android.util.Log;
+
 import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
@@ -401,6 +403,7 @@ public class Library
     {
         //Generate JSON Object from library
         Gson gson = new Gson();
+        Log.i("Library@", "Saving library to file");
 
         JsonObject libraryObject = new JsonObject();
         libraryObject.addProperty("version", LIBRARY_CACHE_VERSION);
@@ -453,6 +456,7 @@ public class Library
         }
         catch(IOException ignored)
         {
+            Log.i("Library", "Could not save library : " + ignored.getMessage());
         }
     }
 
@@ -552,6 +556,7 @@ public class Library
                 addPlaylist(p.getString("name"), songList, art, subtitle,
                         Source.SOURCES.get(p.getInt("source")),
                         p.get("id"));
+                Log.i("Library", "Loaded playlist " + p.getString("name"));
             }
 
             Library.generateLists();

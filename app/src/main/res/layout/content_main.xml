@@ -21,8 +21,8 @@
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/currentplay_layout"
-        android:background="@color/enabledFilter"
         android:visibility="visible"
+        android:background="?attr/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

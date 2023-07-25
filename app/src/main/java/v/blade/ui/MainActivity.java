@@ -35,6 +35,7 @@ import com.google.android.material.navigation.NavigationView;
 import v.blade.BladeApplication;
 import v.blade.R;
 import v.blade.databinding.ActivityMainBinding;
+import v.blade.library.Library;
 import v.blade.player.MediaBrowserService;
 import v.blade.sources.Source;
 
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
         //First launch dialog
         if(BladeApplication.shouldDisplayFirstLaunchDialog)
         {

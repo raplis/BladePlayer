@@ -64,9 +64,12 @@
     <string name="add_to_playlist">加入播放列表…</string>
     <string name="manage_libraries">管理库</string>
     <string name="remove_from_list">从播放列表移除</string>
-    <string name="song_added_to_list">已添加 %1$s 至 %2$s</string>
-    <string name="song_added_to_list_error">无法将 %1$s 添加至 %2$s</string>
+    <string name="song_added_to_list">已添加至 %1$s</string>
+    <string name="song_added_to_list_error">无法添加至 %1$s</string>
     <string name="new_playlist">新建播放列表</string>
+    <string name="already_in_list">这歌已经在列表里了</string>
+    <string name="add_success">这歌已经成功加入</string>
+
     <string name="name">名字</string>
     <string name="could_not_create_playlist">无法创建 %1$s</string>
     <string name="are_you_sure_delete_playlist">你确定要删除 %1$s 吗？</string>

@@ -266,7 +266,7 @@ public class LibraryObjectAdapter extends RecyclerView.Adapter<LibraryObjectAdap
         fileNameWithoutExtension = fileNameWithoutExtension.trim();
         viewHolder.titleView.setText(fileNameWithoutExtension);
         RequestCreator image = current.getImageRequest();
-        Log.i("LibraryObjectAdapter", "fileNameWithoutExtension: " + fileNameWithoutExtension);
+        Log.i("LibraryObjectAdapter", "fileNameWithoutExtension: " + fileNameWithoutExtension + " " + image);
         if(viewHolder.imageView != null)
         {
             if(image != null)
@@ -286,7 +286,10 @@ public class LibraryObjectAdapter extends RecyclerView.Adapter<LibraryObjectAdap
             else if(current instanceof Album || current instanceof Song)
                 viewHolder.imageView.setImageResource(R.drawable.flac);
             else if(current instanceof Playlist)
+            {
                 viewHolder.imageView.setImageResource(R.drawable.ic_playlist);
+                System.out.println("into this line");
+            }
         }
 
         //Clear subimageview

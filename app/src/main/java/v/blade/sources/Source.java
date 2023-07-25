@@ -1,6 +1,7 @@
 package v.blade.sources;
 
 import android.os.Process;
+import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
@@ -144,9 +145,10 @@ public abstract class Source
      */
     public void addSongToPlaylist(Song song, Playlist playlist, Runnable callback, Runnable failureCallback)
     {
-        //Add track to playlist locally
-        playlist.getSongs().add(song);
+//        Log.i("Source@", "Added song to playlist");
 
+//        Add track to playlist locally
+        playlist.getSongs().add(song);
         //Save library
         Library.save();
         saveSources();
@@ -342,7 +344,7 @@ public abstract class Source
         isSyncing = true;
 
         //Reset the library
-        Library.reset();
+//        Library.reset();
 
         //Synchronize every source
         final List<Future> futures = new ArrayList<>();
