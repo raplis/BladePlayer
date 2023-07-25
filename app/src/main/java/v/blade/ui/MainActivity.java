@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
                                 Bitmap art = metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ART);
 
                                 if(art == null)
-                                binding.appBarMain.contentMain.currentplayElementImage.setImageResource(R.drawable.ic_album);
+                                binding.appBarMain.contentMain.currentplayElementImage.setImageResource(R.drawable.flacappbar);
                                 else{
                                     if(display.endsWith("flac")) {
                                         binding.appBarMain.contentMain.currentplayElementImage.setImageResource(R.drawable.flacappbar);

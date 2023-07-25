@@ -284,7 +284,7 @@ public class LibraryObjectAdapter extends RecyclerView.Adapter<LibraryObjectAdap
             else if(current instanceof Artist)
                 viewHolder.imageView.setImageResource(R.drawable.ic_artist);
             else if(current instanceof Album || current instanceof Song)
-                viewHolder.imageView.setImageResource(R.drawable.ic_album);
+                viewHolder.imageView.setImageResource(R.drawable.flac);
             else if(current instanceof Playlist)
                 viewHolder.imageView.setImageResource(R.drawable.ic_playlist);
         }
