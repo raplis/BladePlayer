@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity
         {
             MediaController mediaController = getMediaController();
             if(mediaController == null) return;
-            if(mediaController.getPlaybackState().getState() == PlaybackState.STATE_PLAYING) {
+            if(mediaController.getPlaybackState().getState() == PlaybackState.STATE_PLAYING ||
+                    mediaController.getPlaybackState().getState() == PlaybackState.STATE_PAUSED) {
                 Intent intent = new Intent(this, PlayActivity.class);
                 startActivity(intent);
             }
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity
         binding.appBarMain.contentMain.currentplayElementPlaypause.setOnClickListener(view ->
         {
             //Play/pause action
+            //may these two lines can delete
             MediaController mediaController = getMediaController();
             if(mediaController == null) return;
 

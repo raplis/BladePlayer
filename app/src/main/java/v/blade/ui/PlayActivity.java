@@ -125,6 +125,7 @@ public class PlayActivity extends AppCompatActivity
                 MediaControllerCompat.getMediaController(this).getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_ALL);
             else
                 MediaControllerCompat.getMediaController(this).getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
+            MediaControllerCompat.getMediaController(this).getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
         });
         binding.playRepeat.setOnClickListener(view ->
         {
@@ -134,6 +135,7 @@ public class PlayActivity extends AppCompatActivity
                 MediaControllerCompat.getMediaController(this).getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_ALL);
             else
                 MediaControllerCompat.getMediaController(this).getTransportControls().setRepeatMode(PlaybackStateCompat.REPEAT_MODE_NONE);
+            MediaControllerCompat.getMediaController(this).getTransportControls().setShuffleMode(PlaybackStateCompat.SHUFFLE_MODE_NONE);
         });
 
         //Set seekBar action
