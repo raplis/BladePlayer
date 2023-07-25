@@ -79,9 +79,15 @@ public class MainActivity extends AppCompatActivity
         //Set 'currentPlay' actions
         binding.appBarMain.contentMain.currentplayLayout.setOnClickListener(view ->
         {
+            MediaController mediaController = getMediaController();
+            if(mediaController == null) return;
+            if(mediaController.getPlaybackState().getState() == PlaybackState.STATE_PLAYING) {
+                Intent intent = new Intent(this, PlayActivity.class);
+                startActivity(intent);
+            }
+
             //Open currentPlay
-            Intent intent = new Intent(this, PlayActivity.class);
-            startActivity(intent);
+
         });
         binding.appBarMain.contentMain.currentplayElementPlaypause.setOnClickListener(view ->
         {

@@ -243,15 +243,12 @@ public class PlayActivity extends AppCompatActivity
 
                                 //Set art
                                 Bitmap art = metadata.getBitmap(MediaMetadataCompat.METADATA_KEY_ART);
-                                if(art != null) {
-                                    if(display.endsWith("flac")) {
+                                    if(art == null ||  display.endsWith("flac")) {
                                         binding.playAlbum.setImageResource(R.drawable.big_album);
                                     }
                                     else {
                                         binding.playAlbum.setImageBitmap(art);
                                     }
-                                }
-                                else binding.playAlbum.setImageResource(R.drawable.ic_album);
 
                                 updatePlaylist();
                             }
