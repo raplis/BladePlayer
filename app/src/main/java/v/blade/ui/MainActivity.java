@@ -1,5 +1,6 @@
 package v.blade.ui;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -31,6 +33,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import v.blade.BladeApplication;
 import v.blade.R;
@@ -51,17 +55,17 @@ public class MainActivity extends AppCompatActivity
 
     public static String[] purifyString (String s)
     {
-        String display = s;
-        int dotIndex = display.lastIndexOf(".");
-        String title = dotIndex == -1 ? display : display.substring(0, dotIndex);
+        int dotIndex = s.lastIndexOf(".");
+        String title = dotIndex == -1 ? s : s.substring(0, dotIndex);
         dotIndex = title.lastIndexOf("[");
         title = dotIndex == -1 ? title : title.substring(0, dotIndex);
         dotIndex = title.lastIndexOf("-");
         title = dotIndex == -1 ? title : title.substring(dotIndex + 1);
         title = title.trim();
-        String [] res= {title, display};
+        String [] res= {title, s};
         return res;
     }
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -79,18 +83,45 @@ public class MainActivity extends AppCompatActivity
         //Set 'currentPlay' actions
         binding.appBarMain.contentMain.currentplayLayout.setOnClickListener(view ->
         {
-            MediaController mediaController = getMediaController();
-            if(mediaController == null) return;
-            if(mediaController.getPlaybackState().getState() == PlaybackState.STATE_PLAYING ||
-                    mediaController.getPlaybackState().getState() == PlaybackState.STATE_PAUSED) {
-                Intent intent = new Intent(this, PlayActivity.class);
-                startActivity(intent);
-            }
-
-            //Open currentPlay
 
         });
-        binding.appBarMain.contentMain.currentplayElementPlaypause.setOnClickListener(view ->
+        AtomicReference<Float> x = new AtomicReference<>((float) 0);
+
+        binding.appBarMain.contentMain.currentplayLayout.setOnTouchListener((view, motionEvent) ->
+                {
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            x.set(motionEvent.getX());
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            if(motionEvent.getX() - x.get() > 100)
+                            {
+                                getMediaController().getTransportControls().skipToNext();
+                            }
+                            else if(motionEvent.getX() - x.get() < -100)
+                            {
+                                getMediaController().getTransportControls().skipToPrevious();
+                            }
+                            else  {
+                                MediaController mediaController = getMediaController();
+                                if(mediaController == null) return false;
+                                if(mediaController.getPlaybackState().getState() == PlaybackState.STATE_PLAYING ||
+                                        mediaController.getPlaybackState().getState() == PlaybackState.STATE_PAUSED) {
+                                    Intent intent = new Intent(this, PlayActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                            break;
+                    }
+                    return true;
+                });
+
+
+
+//Open currentPlay
+                binding.appBarMain.contentMain.currentplayElementPlaypause.setOnClickListener(view ->
         {
             //Play/pause action
             //may these two lines can delete
