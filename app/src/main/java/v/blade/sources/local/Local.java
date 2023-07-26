@@ -128,7 +128,7 @@ public class Local extends Source
 //                    LOCAL_IMAGE_LEVEL = 3;
                 }
                 Log.i("Local","Title : " + title + " | Album : " + album + " | Artist : " + artist + " | Track : " + track_number + " | ID : " + id + " | Album ID : " + albumId + " | Path : " + pathUri);
-                Library.addSong(data, album, artists, this, id, artists, pathUri, track_number, new String[artists.length], new String[artists.length], pathUri, LOCAL_IMAGE_LEVEL);
+                Library.addSong(data, album, artists, this, id, artists, pathUri, track_number, new String[artists.length], new String[artists.length], pathUri, LOCAL_IMAGE_LEVEL, 0);
             }
             while(musicCursor.moveToNext());
 

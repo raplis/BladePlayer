@@ -15,6 +15,18 @@ public class Song extends LibraryObject
     Album album;
     int track_number;
 
+    public int getPlayCount()
+    {
+        return playCount;
+    }
+
+    public void setPlayCount(int playCount)
+    {
+        this.playCount = playCount;
+    }
+
+    int playCount = 5;
+
     protected Song(String name, Album album, Artist[] artists, int track_number)
     {
         this.name = name;
@@ -22,6 +34,7 @@ public class Song extends LibraryObject
         this.album = album;
         this.track_number = track_number;
         this.sources = new ArrayList<>();
+//        this.playCount = Library.getSongs().get(name).playCount;
     }
 
     protected void addSource(Source source, Object id, boolean handled)

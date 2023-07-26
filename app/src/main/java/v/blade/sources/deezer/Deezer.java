@@ -291,7 +291,7 @@ public class Deezer extends Source
                     Library.addSong(track.title, track.album.title, artists, this, track.id, aartists,
                             track.album.cover_medium,
                             1, //TODO : Obtain track rank
-                            artistsImages, aartistsImages, track.album.cover_big, DEEZER_IMAGE_LEVEL);
+                            artistsImages, aartistsImages, track.album.cover_big, DEEZER_IMAGE_LEVEL, 0);
                 }
             } while(tracksLeft > 0);
 
@@ -343,7 +343,7 @@ public class Deezer extends Source
                         Library.addSong(track.title, album.title, artists, this, track.id, aartists,
                                 album.cover_medium,
                                 track_number,
-                                artistsImages, aartistsImages, album.cover_big, DEEZER_IMAGE_LEVEL);
+                                artistsImages, aartistsImages, album.cover_big, DEEZER_IMAGE_LEVEL, 0);
                     }
                 }
             }

@@ -300,7 +300,8 @@ public class LibraryObjectAdapter extends RecyclerView.Adapter<LibraryObjectAdap
         {
             if(current instanceof Song)
             {
-                viewHolder.subtitleView.setText(((Song) current).getArtistsString());
+                viewHolder.subtitleView.setText(((Song) current).getArtistsString() + " \u00B7 " +
+                        ((Song) current).getPlayCount() + "\uD83C\uDFB6");
             }
             else if(current instanceof Album)
             {

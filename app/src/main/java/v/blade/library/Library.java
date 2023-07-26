@@ -82,7 +82,7 @@ public class Library
 
     public static synchronized Song addSong(String title, String album, String[] artists, Source source, Object sourceId,
                                             String[] albumArtists, String albumMiniatureURL, int track_number, String[] artistMiniaturesUrl,
-                                            String[] albumArtistsMiniatureUrl, String albumImageURL, int albumImageLevel)
+                                            String[] albumArtistsMiniatureUrl, String albumImageURL, int albumImageLevel, int countPlay)
     {
         /* obtain song artists and album artists */
         Artist[] sartists = new Artist[artists.length];
@@ -148,6 +148,7 @@ public class Library
         if(s == null)
         {
             s = new Song(title, salbum, sartists, track_number);
+            s.setPlayCount(countPlay);
             library_songs.put(artists[0].toLowerCase() + ":" + album.toLowerCase() + ":" + title.toLowerCase(), s);
             for(Artist a : sartists) a.track_count++;
             for(Artist a : saartists)
@@ -466,7 +467,7 @@ public class Library
         songJson.addProperty("name", s.getName());
         songJson.addProperty("track_number", s.getTrackNumber());
         songJson.addProperty("album", s.getAlbum().getName());
-
+        songJson.addProperty("play_count", s.getPlayCount());
         songJson.addProperty("album_art", s.getAlbum().imageStr);
         songJson.addProperty("album_art_big", s.getAlbum().imageBigStr);
         JsonArray aartists = new JsonArray();
@@ -613,7 +614,8 @@ public class Library
         else
             song = addSong(s.getString("name"), s.getString("album"), artists, source0,
                     source0Json.get("id"), aartists, art, s.getInt("track_number"),
-                    artistsImages, aartistsImages, bigArt, 1);
+                    artistsImages, aartistsImages, bigArt, 1, s.getInt("play_count"));
+
 
         //Add all other sources to song
         for(int j = 1; j < sourcesJson.length(); j++)

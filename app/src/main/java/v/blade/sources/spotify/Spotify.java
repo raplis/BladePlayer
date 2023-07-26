@@ -363,7 +363,7 @@ public class Spotify extends Source
                     Library.addSong(track.name, track.album.name, artists, this, track.id, aartists,
                             track.album.images[track.album.images.length - 2].url,
                             computeTrackNumber(track.disc_number, track.track_number),
-                            artistsImages, aartistsImages, track.album.images[0].url, SPOTIFY_IMAGE_LEVEL);
+                            artistsImages, aartistsImages, track.album.images[0].url, SPOTIFY_IMAGE_LEVEL, 0);
                 }
 
                 tracksLeft = trackPaging.total - 50 * (tracksIndex + 1);
@@ -413,7 +413,7 @@ public class Spotify extends Source
                         Library.addSong(track.name, album.name, artists, this, track.id, aartists,
                                 album.images[album.images.length - 2].url,
                                 computeTrackNumber(track.disc_number, track.track_number),
-                                artistsImages, aartistsImages, album.images[0].url, SPOTIFY_IMAGE_LEVEL);
+                                artistsImages, aartistsImages, album.images[0].url, SPOTIFY_IMAGE_LEVEL, 0);
                     }
                 }
 

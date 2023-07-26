@@ -55,11 +55,14 @@ public class MainActivity extends AppCompatActivity
 
     public static String[] purifyString (String s)
     {
+
         int dotIndex = s.lastIndexOf(".");
         String title = dotIndex == -1 ? s : s.substring(0, dotIndex);
         dotIndex = title.lastIndexOf("[");
         title = dotIndex == -1 ? title : title.substring(0, dotIndex);
         dotIndex = title.lastIndexOf("-");
+        title = dotIndex == -1 ? title : title.substring(dotIndex + 1);
+        dotIndex = title.lastIndexOf("/");
         title = dotIndex == -1 ? title : title.substring(dotIndex + 1);
         title = title.trim();
         String [] res= {title, s};
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         //First launch dialog
+        Library.loadFromCache();
         if(BladeApplication.shouldDisplayFirstLaunchDialog)
         {
             BladeApplication.shouldDisplayFirstLaunchDialog = false;
@@ -79,7 +83,6 @@ public class MainActivity extends AppCompatActivity
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         //Set 'currentPlay' actions
         binding.appBarMain.contentMain.currentplayLayout.setOnClickListener(view ->
         {
@@ -208,6 +211,7 @@ public class MainActivity extends AppCompatActivity
                                 String [] res = purifyString(metadata.getString(MediaMetadataCompat.METADATA_KEY_TITLE));
                                 String title = res[0];
                                 String display = res[1];
+                                Log.d("Mainacitivty", "title" + title);
                                 binding.appBarMain.contentMain.currentplayElementTitle.setText(title);
 
                                 String subtitle = metadata.getString(MediaMetadataCompat.METADATA_KEY_ARTIST) + " - " + metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM);

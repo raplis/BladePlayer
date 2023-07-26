@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import v.blade.BladeApplication;
 import v.blade.library.Library;
+import v.blade.library.Playlist;
 import v.blade.library.Song;
 import v.blade.sources.Source;
 import v.blade.ui.PlayActivity;
@@ -280,6 +282,16 @@ public class MediaBrowserService extends MediaBrowserServiceCompat
 
     public void notifyPlaybackEnd()
     {
+        for(Song song : Library.getSongs())
+        {
+            if(song.getName().equals(playlist.get(index).getName()))
+            {
+                song.setPlayCount(song.getPlayCount() + 1);
+                Log.i("@@@@", song.getPlayCount() + 1 + " ");
+                break;
+            }
+        }
+        Library.save();
         //Handle repeat current song mode
         if(mediaSession.getController().getRepeatMode() == PlaybackStateCompat.REPEAT_MODE_ONE)
         {
