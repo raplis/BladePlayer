@@ -52,6 +52,7 @@ public class Local extends Source
         super();
         this.name = BladeApplication.appContext.getString(NAME_RESOURCE);
         this.player = new LocalPlayer(this);
+        Log.i("local", "Local constructor, new a local player");
     }
 
     @Override

@@ -132,11 +132,11 @@ public class PlayActivity extends AppCompatActivity
                 case MotionEvent.ACTION_UP:
                     if(motionEvent.getX() - x.get() > 100)
                     {
-                        getMediaController().getTransportControls().skipToNext();
+                        getMediaController().getTransportControls().skipToPrevious();
                     }
                     else if(motionEvent.getX() - x.get() < -100)
                     {
-                        getMediaController().getTransportControls().skipToPrevious();
+                        getMediaController().getTransportControls().skipToNext();
                     }
                     break;
             }
@@ -444,6 +444,7 @@ public class PlayActivity extends AppCompatActivity
                 , touchHelper, view ->
         {
             MediaBrowserService.getInstance().setIndex(binding.playList.getChildAdapterPosition(view));
+            Log.i("PlayActivity", "onClick: " + binding.playList.getChildAdapterPosition(view));
             getMediaController().getTransportControls().play();
         });
         touchHelper.attachToRecyclerView(binding.playList);

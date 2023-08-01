@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -95,10 +96,21 @@ public class LocalPlayer extends Source.Player
     {
         try
         {
+            Thread.sleep(500);
+        }
+        catch(InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
+        Log.i("LocalPlayer", "getDuration: " + mediaPlayer.getDuration());
+        try
+        {
             return mediaPlayer.getDuration();
         }
         catch(IllegalStateException e)
         {
+
+//            Log.i("LocalPlayer", "getDuration: " + mediaPlayer.getDuration());
             return 0;
         }
     }

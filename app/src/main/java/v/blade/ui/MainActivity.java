@@ -84,10 +84,11 @@ public class MainActivity extends AppCompatActivity
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         //Set 'currentPlay' actions
-        binding.appBarMain.contentMain.currentplayLayout.setOnClickListener(view ->
-        {
+//        binding.appBarMain.contentMain.currentplayLayout.setOnClickListener(view ->
+//        {
+//
+//        });
 
-        });
         AtomicReference<Float> x = new AtomicReference<>((float) 0);
 
         binding.appBarMain.contentMain.currentplayLayout.setOnTouchListener((view, motionEvent) ->
@@ -101,11 +102,11 @@ public class MainActivity extends AppCompatActivity
                         case MotionEvent.ACTION_UP:
                             if(motionEvent.getX() - x.get() > 100)
                             {
-                                getMediaController().getTransportControls().skipToNext();
+                                getMediaController().getTransportControls().skipToPrevious();
                             }
                             else if(motionEvent.getX() - x.get() < -100)
                             {
-                                getMediaController().getTransportControls().skipToPrevious();
+                                getMediaController().getTransportControls().skipToNext();
                             }
                             else  {
                                 MediaController mediaController = getMediaController();
